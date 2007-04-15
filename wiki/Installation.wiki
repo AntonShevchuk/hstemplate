@@ -1,0 +1,18 @@
+#summary Installation HSTemplate in your project
+
+= Download =
+
+You can download HSTemplate from Code-Google:
+  * use SVN: `svn checkout http://hstemplate.googlecode.com/svn/trunk/ hstemplate`
+  * use web-browser: `http://code.google.com/p/hstemplate/downloads/list`
+
+= Installation =
+
+If you download archiv with source unpack it to temporary directory
+
+  * copy directory `HSTemplate` to your project
+  * include file `HSTemplate.class.php`
+  * all ready :)
+
+
+
