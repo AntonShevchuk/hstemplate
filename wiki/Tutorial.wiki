@@ -40,6 +40,7 @@ $DisplayIndex->addTemplate('header', 'header.html');
 $DisplayIndex->addTemplate('index' , 'index.html' );
 $DisplayIndex->addTemplate('footer', 'footer.html');
 }}}
+
 === Assign Variables ===
 You can assign variable to 'Global section' or to 'Display section' or to 'Template section', priority:
   # Global section
@@ -49,11 +50,19 @@ You can assign variable to 'Global section' or to 'Display section' or to 'Templ
 Example:
 {{{
 // assign template variables
-$DisplayIndex->assign('display',     'DISPLAY',   'index');
+$DisplayIndex->assign('template',     'DISPLAY',   'index');
 // assign display variables
 $DisplayIndex->assign('display',     'DISPLAY');
 // assign global variables (for all display)
 $HSTemplate->assignGlobal('global',  'GLOBAL');
+}}}
+
+=== Templates ===
+{{{
+<h2>Test 1</h2>
+Global   Variable: <?=$global?><br/>
+Display  Variable: <?=$display?><br/>
+Template Variable: <?=$template?><br/>
 }}}
 
 === Use Cache ===
@@ -73,4 +82,3 @@ if (!$DisplayContent->isCached()) {
 // display all non separated 'display'
 $HSTemplate->display();
 }}}
-
