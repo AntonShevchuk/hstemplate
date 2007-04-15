@@ -1,0 +1,65 @@
+#summary Learn HSTemplate in 10 Minutes (Small tutorial)
+#labels Phase-Deploy
+
+=== Include the HSTemplate class library ===
+{{{
+require_once('HSTemplate/HSTemplate.class.php');
+}}}
+=== Instantiate the HSTemplate object ===
+{{{
+/* HSTemplate initialization */
+$options = array(
+                'template_path' => 'templates',
+                'debug'         => false,
+                );
+                
+$HSTemplate =& new HSTemplate($options);
+}}}
+
+=== Instantiate the HSTemplateDisplay object ===
+{{{
+// index page
+$DisplayIndex = & $HSTemplate->getDisplay('index');
+}}}
+
+=== Add Templates ===
+Directory structure:
+{{{
+\- templates (directory set as `template_path`)
+   \- index  (by display name)
+      |- header.html
+      |- index.html
+      |- footer.html
+}}}
+Example:
+{{{
+// add templates
+$DisplayIndex->addTemplate('header', 'header.html');
+$DisplayIndex->addTemplate('index' , 'index.html' );
+$DisplayIndex->addTemplate('footer', 'footer.html');
+}}}
+=== Assign Variables ===
+You can assign variable to 'Global section' or to 'Display section' or to 'Template section', priority:
+  # Global section
+  # Display section
+  # Template section
+
+Example:
+{{{
+// assign template variables
+$DisplayIndex->assign('display',     'DISPLAY',   'index');
+// assign display variables
+$DisplayIndex->assign('display',     'DISPLAY');
+// assign global variables (for all display)
+$HSTemplate->assignGlobal('global',  'GLOBAL');
+}}}
+
+=== Display ===
+{{{
+// display all non separated 'display'
+$HSTemplate->display();
+}}}
+
+
+
+
