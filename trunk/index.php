@@ -18,8 +18,7 @@ $DisplayContent = & $HSTemplate->getDisplay('content', true);
 $DisplayContent->assign('display', 'DISPLAY');
 switch ($mod) {
 	case 'test1':
-	    $DisplayContent->setCacheOptions(true, 60);
-	    $DisplayContent->setCacheId('test1');
+	    $DisplayContent->setCache('test1', 60);
 	    if (!$DisplayContent->isCached()) {
     		$DisplayContent->addTemplate('test1', 'test1.html');
     		$DisplayContent->assign('time',     date('H:i:s'), 'test1');

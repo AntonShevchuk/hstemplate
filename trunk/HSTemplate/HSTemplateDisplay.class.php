@@ -139,19 +139,21 @@ class HSTemplateDisplay
 	 }
 	 
 	 /**
-	  * set cache options
+	  * set cache
 	  *
 	  * @author  dark
 	  * @class   HSTemplateDisplay
 	  * @access  public
-	  * @param   bool       $aFlag            
+	  * @param   mixed      $aId            
 	  * @param   integer    $aTime
 	  * @return  void
 	  */
-	 function setCacheOptions($aFlag = true, $aTime = 3600)
+	 function setCache($aId, $aTime = 3600)
 	 {
-	    $this->_caching          = $aFlag;
+	    $this->_caching          = true;
 	    $this->_caching_lifetime = $aTime;
+	    
+	    $this->setCacheId($aId);
 	    
 	    if ($this->_caching) {
 	        if (is_dir($this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR . $this->_name)) {
@@ -167,7 +169,7 @@ class HSTemplateDisplay
 	    
 	 	return true;
 	 }
-
+	 
 	 /**
 	  * set cache id
 	  *
