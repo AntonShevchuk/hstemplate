@@ -1,0 +1,30 @@
+<html>
+<head>
+	<title>HSTemplate - PHP Template Engine </title>
+    <meta name="keywords" content="php,php5,template engine,oop,mysql,script" >
+    <meta name="description" content="High Speed Template - PHP Template Engine" >
+    <meta name="Generator" content="phpXCore - Copyright (C) 2007 Open Source. All rights reserved." >
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+    <link href="/style.css" rel="stylesheet" type="text/css"  >
+</head>
+
+<body>
+
+<div id="body">
+<div id="header" class="gray-box">
+    <b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b>
+        <div class="boxcontent">
+            <h1>HSTemplate</h1>
+             <p>PHP Template Engine</p>
+        </div>
+    <b class="b4b"></b><b class="b3b"></b><b class="b2b"></b><b class="b1b"></b>
+</div>  
+
+<div id="header-nav">
+   <ul>
+        <li <?php if ($mod == '') { ?>id="active"<?php } ?>><a href="/" title="Home">Main Page</a></li>
+		<li <?php if ($mod == 'test1') { ?>id="active"<?php } ?>><a href="/index.php?mod=test1">Test 1</a></li>
+		<li <?php if ($mod == 'test2') { ?>id="active"<?php } ?>><a href="/index.php?mod=test2">Test 2</a></li>
+		<li <?php if ($mod == 'test3') { ?>id="active"<?php } ?>><a href="/index.php?mod=test3">Test 3</a></li>
+   </ul>
+</div>
