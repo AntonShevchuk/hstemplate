@@ -1,4 +1,4 @@
-#summary Learn HSTemplate in 10 Minutes (Small tutorial)
+#summary Learn HSTemplate in 10 Minutes (Small tutorial). See example for more information
 #labels Phase-Deploy
 
 === Include the HSTemplate class library ===
@@ -59,7 +59,6 @@ $HSTemplate->assignGlobal('global',  'GLOBAL');
 // display all non separated 'display'
 $HSTemplate->display();
 }}}
-
 
 
 
