@@ -1,4 +1,5 @@
 #summary Installation HSTemplate in your project
+#labels Phase-Deploy
 
 = Download =
 
@@ -13,6 +14,5 @@ If you download archiv with source unpack it to temporary directory
   * copy directory `HSTemplate` to your project
   * include file `HSTemplate.class.php`
   * all ready :)
-
 
 
