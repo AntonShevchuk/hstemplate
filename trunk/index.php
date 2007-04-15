@@ -18,15 +18,22 @@ $DisplayContent = & $HSTemplate->getDisplay('content', true);
 $DisplayContent->assign('display', 'DISPLAY');
 switch ($mod) {
 	case 'test1':
-		$DisplayContent->addTemplate('test1', 'test1.html');
-		$DisplayContent->assign('template', 'TEMPLATE 1', 'test1');
+	    $DisplayContent->setCacheOptions(true, 60);
+	    $DisplayContent->setCacheId('test1');
+	    if (!$DisplayContent->isCached()) {
+    		$DisplayContent->addTemplate('test1', 'test1.html');
+    		$DisplayContent->assign('time',     date('H:i:s'), 'test1');
+    		$DisplayContent->assign('template', 'TEMPLATE 1', 'test1');
+	    }
 		break;
 	case 'test2':
 		$DisplayContent->addTemplate('test2', 'test2.html');
+		$DisplayContent->assign('time',     date('H:i:s'), 'test2');
 		$DisplayContent->assign('template', 'TEMPLATE 2', 'test2');
 		break;
 	case 'test3':
 		$DisplayContent->addTemplate('test3', 'test3.html');
+		$DisplayContent->assign('time',     date('H:i:s'), 'test3');
 		$DisplayContent->assign('template', 'TEMPLATE 3', 'test3');
 		break;
 

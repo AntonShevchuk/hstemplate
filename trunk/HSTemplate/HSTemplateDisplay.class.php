@@ -41,6 +41,27 @@ class HSTemplateDisplay
     var $_name;
     
     /**
+     * cache status
+     *
+     * @var bool
+     */
+    var $_caching = false;
+    
+    /**
+     * cache lifetime
+     *
+     * @var integer
+     */
+    var $_caching_lifetime = 3600;
+    
+    /**
+     * cache id
+     *
+     * @var integer
+     */
+    var $_caching_id = null;
+    
+    /**
      * options array
      *
      * @var array
@@ -94,7 +115,7 @@ class HSTemplateDisplay
 	  * @param   string     $aTemplateName  template name
 	  * @param   string     $aTemplateFile  template file
 	  * @param   string     $aTemplatePath  template path
-	  * @return  bool
+	  * @return  void
 	  */
 	 function addTemplate($aTemplateName, $aTemplateFile, $aTemplatePath = null) 
 	 {
@@ -116,6 +137,126 @@ class HSTemplateDisplay
 	         return true;
 	     }
 	 }
+	 
+	 /**
+	  * set cache options
+	  *
+	  * @author  dark
+	  * @class   HSTemplateDisplay
+	  * @access  public
+	  * @param   bool       $aFlag            
+	  * @param   integer    $aTime
+	  * @return  void
+	  */
+	 function setCacheOptions($aFlag = true, $aTime = 3600)
+	 {
+	    $this->_caching          = $aFlag;
+	    $this->_caching_lifetime = $aTime;
+	    
+	    if ($this->_caching) {
+	        if (is_dir($this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR . $this->_name)) {
+	            if (!is_writable($this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR . $this->_name)) {
+	                trigger_error('HSTemplate Error: Cannot write directory "' . $this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR . $this->_name . '"', E_USER_ERROR);	                
+	            }
+	        } else {
+	            if (!@mkdir($this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR . $this->_name)) {
+	                trigger_error('HSTemplate Error: Cannot create directory "' . $this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR . $this->_name . '"', E_USER_ERROR);
+	            }
+	        }
+	    }
+	    
+	 	return true;
+	 }
+
+	 /**
+	  * set cache id
+	  *
+	  * @author  dark
+	  * @class   HSTemplateDisplay
+	  * @access  public
+	  * @param   mixed       $aId  
+	  * @return  void
+	  */
+	 function setCacheId($aId)
+	 {
+	    if (is_array($aId)) {
+	       $this->_caching_id = implode("::", $aId);
+	    } else {
+	       $this->_caching_id = $aId;
+	    } 
+	    
+	 	return true;
+	 }
+
+	 /**
+	  * Check cache
+	  *
+	  * @author  dark
+	  * @class   HSTemplateDisplay
+	  * @access  public
+	  * @return  void
+	  */
+	 function isCached()
+	 {
+	    if ($this->_caching_id === null) {
+	        return false;
+	    }
+	    
+	    $aFileName = $this->_getCacheFile();
+
+	    if (!file_exists($aFileName)) {
+	        return false;
+	    } else {
+	        
+	        if ((filemtime($aFileName) + $this->_caching_lifetime) < time()) {
+	            return false;
+	        } else {
+	            return true;
+	        }
+	    }
+	 }
+
+	 /**
+	  * create cache file
+	  *
+	  * @author  dark
+	  * @class   HSTemplateDisplay
+	  * @access  private
+	  * @param   string     $aContent       content for file
+	  * @return  void
+	  */
+	 function _createCache($aContent = '')
+	 {
+	    $aFileName = $this->_getCacheFile();
+
+	    @unlink($aFileName);
+	    
+	    // create file with cache
+        $fp = fopen($aFileName, "at") or 
+                die(trigger_error('HSTemplate Error: Cannot create file "'. $aFileName . '"', E_USER_ERROR));
+        
+        flock ($fp, LOCK_EX);// lock file
+        rewind($fp); // rewind the position of a file pointer
+        fwrite($fp, $aContent); // write data
+        flock ($fp, LOCK_UN); // release the lock
+        fclose($fp); // close file
+	 }
+	 
+	 /**
+	  * get cache file name
+	  *
+	  * @author  dark
+	  * @class   HSTemplateDisplay
+	  * @access  private
+	  * @return  string
+	  */
+	 function _getCacheFile()
+	 {
+	    return $this->_HSTemplate->_options['cache_path'] . DIRECTORY_SEPARATOR .
+               $this->_name . DIRECTORY_SEPARATOR .
+               md5($this->_name . '#' . $this->_caching_id) . '.html';
+	 }
+	 
 
 	 /**
 	  * assign
@@ -176,14 +317,82 @@ class HSTemplateDisplay
 	  */
 	 function display($aTemplate = null) 
 	 {
-	    $oldErrorReporting = error_reporting();
+	    $this->fetch($aTemplate, true);
+	 }
 
-	    if ($this->_HSTemplate->_options['debug']) {
+	 /**
+	  * fetch
+	  *
+	  * cetch all (or selected) template
+	  *
+	  * @access  public
+	  * @param   string     $aTemplate  template name
+	  * @param   bool       $aDisplay   template name
+	  * @return  rettype  return
+	  */
+	 function fetch($aTemplate = null, $aDisplay = false) 
+	 {
+	    $oldErrorReporting = error_reporting();
+	    
+        if ($this->_HSTemplate->_options['debug']) {
 	        error_reporting(E_ALL);
 	    }  else {
 	        error_reporting(E_ALL ^ E_NOTICE);
 	    }
 	    
+	    if ($this->_caching && $this->isCached()) {
+    	    if (!$aDisplay) {
+    	        ob_start();
+    	    }
+    	    
+	    	include_once($this->_getCacheFile());
+    	 	
+     	    if (!$aDisplay) {
+    	        $cache = ob_get_contents();
+    	        ob_end_clean();
+    	    }
+	    } elseif ($this->_caching && !$this->isCached()) {
+	        ob_start();	        
+    	 	$this->_fetch($aTemplate);
+	        $cache = ob_get_contents();
+	        ob_end_clean();
+	        
+	        $this->_createCache($cache);
+	        // for cache system 
+    	    if (!$aDisplay) {
+    	        return $cache;
+    	    } else {
+    	        echo $cache;
+    	    }
+	    } elseif (!$this->_caching) {
+    	    if (!$aDisplay) {
+    	        ob_start();
+    	    }
+    	    
+    	 	$this->_fetch($aTemplate);
+    	 	
+     	    if (!$aDisplay) {
+    	        $cache = ob_get_contents();
+    	        ob_end_clean();
+    	    }
+	    }
+	    
+	 	
+	 	error_reporting($oldErrorReporting);
+	 	
+	 }
+
+	 /**
+	  * _fetch
+	  *
+	  * fetch all (or selected) template
+	  *
+	  * @access  public
+	  * @param   string     $aTemplate  template name
+	  * @return  rettype  return
+	  */
+	 function _fetch($aTemplate = null) 
+	 {
 	 	if ($aTemplate) {
             if (!isset($this->_templates[$aTemplate])) {
                 $this->_HSTemplate->setError(HSTEMPLATE_DISPLAY_ERROR_TEMPLATE_NOT_DEFINED, $aTemplate);
@@ -198,10 +407,7 @@ class HSTemplateDisplay
 	 	    foreach ($this->_templates as $aTemplateName => $aTemplateFile) {
 	 	        $this->_display($aTemplateName);
 	 	    }
-	 	}
-	 	
-	 	error_reporting($oldErrorReporting);
-	 	return true;
+	 	}	 	
 	 }
 	 
 	 /**
