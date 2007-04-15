@@ -1,0 +1,7 @@
+#summary Introduction
+
+= Introduction =
+
+HSTemplate is a web template system written in PHP. HSTemplate separates PHP, as a business logic, from HTML, a presentation logic.
+
+
