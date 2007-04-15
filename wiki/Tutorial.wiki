@@ -1,4 +1,4 @@
-#summary Learn HSTemplate in 10 Minutes (Small tutorial). See example for more information
+#summary Learn HSTemplate in 10 Minutes (Small tutorial)
 #labels Phase-Deploy
 
 === Include the HSTemplate class library ===
@@ -6,10 +6,12 @@
 require_once('HSTemplate/HSTemplate.class.php');
 }}}
 === Instantiate the HSTemplate object ===
+For options `template_path` and `cache_path` use full path to directory
 {{{
 /* HSTemplate initialization */
 $options = array(
                 'template_path' => 'templates',
+                'cache_path'    => 'cache',
                 'debug'         => false,
                 );
                 
@@ -54,11 +56,21 @@ $DisplayIndex->assign('display',     'DISPLAY');
 $HSTemplate->assignGlobal('global',  'GLOBAL');
 }}}
 
+=== Use Cache ===
+Call method setCache for enable cache for curent `Display`
+  * first argument is unique ID for cache (you can use `$_SERVER['REQUEST_URI']`)
+  * second - it's cache lifetime - default value 3600 seconds (1hour)
+{{{
+$DisplayContent->setCache('test1', 3600);
+if (!$DisplayContent->isCached()) {
+   $DisplayContent->addTemplate('test1', 'test1.html');
+   $DisplayContent->assign('time',     date('H:i:s'), 'test1');
+}
+}}}
+
 === Display ===
 {{{
 // display all non separated 'display'
 $HSTemplate->display();
 }}}
-
-
 
