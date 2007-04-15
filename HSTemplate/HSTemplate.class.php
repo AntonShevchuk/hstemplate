@@ -30,6 +30,7 @@ class HSTemplate
      * options array
      * 
      * template_path - path to template
+     * cache_path    - path to cache
      * debug         - debug enabled error reporting
      *
      * @var array
