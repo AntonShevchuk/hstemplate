@@ -11,10 +11,12 @@ body {
 
 #body {
     width:800px;
+    text-align: left;
+    margin: 0 auto;
 }
 
 a {
-    color:#004;
+    color:#000;
     text-decoration: none;
 }
 
@@ -267,7 +269,7 @@ h3 {
  ******************************************/
 #menu {
     float: left;
-    width: 160px;
+    width: 150px;
     padding: 0px;
     margin: 0px;
 }
@@ -280,14 +282,15 @@ h3 {
  * Menu =nav
  ******************************************/
 .menu-nav {
-    width: 100%;
+    width:148px;
 }
 
 .menu-nav ul {
 	list-style-type: none;	
-    width:154;
+    width:147px;
     margin:0px;
     padding:0px;  
+    padding-bottom:2px;  
 }
 
 .menu-nav ul li {
@@ -386,6 +389,7 @@ h3 {
  * Footer =copy
  ******************************************/
 #footer-copy {
+    padding-top:5px;
     margin-top:5px;
     clear: both;
     width: 100%;
