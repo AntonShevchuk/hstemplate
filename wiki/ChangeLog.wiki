@@ -4,13 +4,13 @@
 
 == revision 15 ==
 
-  * [fix] design (FF, IE and Opera)
+  * *fix* design (FF, IE and Opera)
 
 == revision 11 ==
 
-  * [new] cache system
+  * *new* cache system
 
 
 == revision 1 ==
 
-  * [new] first revision ;)
+  * *new* first revision ;)
