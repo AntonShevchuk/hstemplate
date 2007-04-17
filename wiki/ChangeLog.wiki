@@ -1,0 +1,16 @@
+#summary Changelog
+
+= version 0.1 =
+
+== revision 15 ==
+
+  * [fix] design (FF, IE and Opera)
+
+== revision 11 ==
+
+  * [new] cache system
+
+
+== revision 1 ==
+
+  * [new] first revision ;)
