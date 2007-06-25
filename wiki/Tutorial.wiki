@@ -1,5 +1,5 @@
 #summary Learn HSTemplate in 10 Minutes (Small tutorial)
-#labels Phase-Deploy
+#labels Phase-Deploy,Phase-Implementation
 
 === Include the HSTemplate class library ===
 {{{
