@@ -27,11 +27,11 @@ $DisplayIndex = & $HSTemplate->getDisplay('index');
 === Add Templates ===
 Directory structure:
 {{{
-\- templates (directory set as `template_path`)
-   \- index  (by display name)
+`- templates (directory set as `template_path`)
+   `- index  (by display name)
       |- header.html
       |- index.html
-      |- footer.html
+      `- footer.html
 }}}
 Example:
 {{{
