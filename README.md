@@ -1,6 +1,6 @@
 # HSTemplate
 
-HSTemplate is a web template system written in PHP. HSTemplate separates PHP, as a business logic, from HTML, a presentation logic.
+HSTemplate is a template engine written in PHP. HSTemplate separates PHP, as a business logic, from HTML, a presentation logic.
 
 High Speed Template work with PHP4/5 - it's really very fast template because it's not a "template engine language" wrote on PHP - it's only PHP!
 
